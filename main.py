@@ -35,7 +35,7 @@ model_names = sorted(name for name in models.__dict__
 
 # Parse arguments
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
-parser.add_argument('-d', '--data', default='path to dataset', type=str)
+parser.add_argument('-d', '--data', default='/content/face-attribute-prediction/dataset', type=str)
 parser.add_argument('--arch', '-a', metavar='ARCH', default='resnet50',
                     choices=model_names,
                     help='model architecture: ' +
@@ -44,14 +44,14 @@ parser.add_argument('--arch', '-a', metavar='ARCH', default='resnet50',
 parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
                     help='number of data loading workers (default: 4)')
 # Optimization options
-parser.add_argument('--epochs', default=90, type=int, metavar='N',
+parser.add_argument('--epochs', default=30, type=int, metavar='N',
                     help='number of total epochs to run')
 parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                     help='manual epoch number (useful on restarts)')
-parser.add_argument('--train-batch', default=256, type=int, metavar='N',
-                    help='train batchsize (default: 256)')
-parser.add_argument('--test-batch', default=200, type=int, metavar='N',
-                    help='test batchsize (default: 200)')
+parser.add_argument('--train-batch', default=64, type=int, metavar='N',
+                    help='train batchsize (default: 64)')
+parser.add_argument('--test-batch', default=50, type=int, metavar='N',
+                    help='test batchsize (default: 50)')
 parser.add_argument('--lr', '--learning-rate', default=0.1, type=float,
                     metavar='LR', help='initial learning rate')
 parser.add_argument('--lr-decay', type=str, default='step',
