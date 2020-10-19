@@ -35,7 +35,7 @@ model_names = sorted(name for name in models.__dict__
 
 # Parse arguments
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
-parser.add_argument('-d', '--data', default='/content/face-attribute-prediction/dataset', type=str)
+parser.add_argument('-d', '--data', default='/content/face-attribute-prediction', type=str)
 parser.add_argument('--arch', '-a', metavar='ARCH', default='resnet50',
                     choices=model_names,
                     help='model architecture: ' +
