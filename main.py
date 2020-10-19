@@ -23,7 +23,7 @@ import torchvision.datasets as datasets
 import models
 from math import cos, pi
 
-from models import FocalLoss
+from models import resnet
 from celeba import CelebA
 from utils import Bar, Logger, AverageMeter, accuracy, mkdir_p, savefig
 from tensorboardX import SummaryWriter
@@ -48,10 +48,10 @@ parser.add_argument('--epochs', default=30, type=int, metavar='N',
                     help='number of total epochs to run')
 parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                     help='manual epoch number (useful on restarts)')
-parser.add_argument('--train-batch', default=64, type=int, metavar='N',
-                    help='train batchsize (default: 64)')
-parser.add_argument('--test-batch', default=50, type=int, metavar='N',
-                    help='test batchsize (default: 50)')
+parser.add_argument('--train-batch', default=128, type=int, metavar='N',
+                    help='train batchsize (default: 128)')
+parser.add_argument('--test-batch', default=100, type=int, metavar='N',
+                    help='test batchsize (default: 100)')
 parser.add_argument('--lr', '--learning-rate', default=0.1, type=float,
                     metavar='LR', help='initial learning rate')
 parser.add_argument('--lr-decay', type=str, default='step',
