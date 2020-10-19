@@ -146,7 +146,7 @@ def main():
         model = torch.nn.parallel.DistributedDataParallel(model)
 
     # define loss function (criterion) and optimizer
-    criterion = FocalLoss().cuda()
+    criterion = resnet.FocalLoss().cuda()
 
     optimizer = torch.optim.SGD(model.parameters(), args.lr,
                                 momentum=args.momentum,
