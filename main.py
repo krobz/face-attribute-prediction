@@ -217,7 +217,9 @@ def main():
         num_workers=args.workers, pin_memory=True)
 
     if args.evaluate:
-        validate(test_loader, model, criterion)
+        val_loss, prec1, prec_att = validate(test_loader, model, criterion)
+        print('prec_att:')
+        print(prec_att)
         return
 
     # visualization
@@ -234,7 +236,12 @@ def main():
         train_loss, train_acc = train(train_loader, model, criterion, optimizer, epoch)
 
         # evaluate on validation set
-        val_loss, prec1 = validate(val_loader, model, criterion)
+        val_loss, prec1, prec_att = validate(val_loader, model, criterion)
+
+        # save the acc for each attribute
+        acc_att_dict = {}
+        for i, acc in enumerate(top1_avg_att):
+            acc_att_dict[f"att-{i}"] = acc
 
         # append logger file
         logger.append([lr, train_loss, val_loss, train_acc, prec1])
@@ -243,6 +250,7 @@ def main():
         writer.add_scalar('learning rate', lr, epoch + 1)
         writer.add_scalars('loss', {'train loss': train_loss, 'validation loss': val_loss}, epoch + 1)
         writer.add_scalars('accuracy', {'train accuracy': train_acc, 'validation accuracy': prec1}, epoch + 1)
+        writer.add_scalars('attribute_accuracy', acc_att_dict, epoch + 1)
         #for name, param in model.named_parameters():
         #    writer.add_histogram(name, param.clone().cpu().data.numpy(), epoch + 1)
 
@@ -378,7 +386,7 @@ def validate(val_loader, model, criterion):
                     )
         bar.next()
     bar.finish()
-    return (loss_avg, prec1_avg)
+    return (loss_avg, prec1_avg,top1_avg)
 
 ### change ###
 
