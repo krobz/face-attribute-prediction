@@ -192,6 +192,26 @@ class ResNet(nn.Module):
         return y
 
 
+def resnet18(pretrained=True, **kwargs):
+    """Constructs a ResNet-18 model.
+    Args:
+        pretrained (bool): If True, returns a model pre-trained on ImageNet
+    """
+    model = ResNet(BasicBlock, [2, 2, 2, 2], **kwargs)
+    if pretrained:
+        init_pretrained_weights(model, model_urls['resnet18'])
+    return model
+
+def resnet34(pretrained=True, **kwargs):
+    """Constructs a ResNet-34 model.
+    Args:
+        pretrained (bool): If True, returns a model pre-trained on ImageNet
+    """
+    model = ResNet(BasicBlock, [3, 4, 6, 3], **kwargs)
+    if pretrained:
+        init_pretrained_weights(model, model_urls['resnet34'])
+    return model
+
 def resnet50(pretrained=True, **kwargs):
     """Constructs a ResNet-50 model.
 
@@ -201,6 +221,26 @@ def resnet50(pretrained=True, **kwargs):
     model = ResNet(Bottleneck, [3, 4, 6, 3], **kwargs)
     if pretrained:
         init_pretrained_weights(model, model_urls['resnet50'])
+    return model
+
+def resnet101(pretrained=True, **kwargs):
+    """Constructs a ResNet-101 model.
+    Args:
+        pretrained (bool): If True, returns a model pre-trained on ImageNet
+    """
+    model = ResNet(Bottleneck, [3, 4, 23, 3], **kwargs)
+    if pretrained:
+        init_pretrained_weights(model, model_urls['resnet101'])
+    return model
+
+def resnet152(pretrained=True, **kwargs):
+    """Constructs a ResNet-152 model.
+    Args:
+        pretrained (bool): If True, returns a model pre-trained on ImageNet
+    """
+    model = ResNet(Bottleneck, [3, 8, 36, 3], **kwargs)
+    if pretrained:
+        init_pretrained_weights(model, model_urls['resnet152'])
     return model
 
 
@@ -304,24 +344,3 @@ class FocalLoss(nn.Module):
         else:
             return F_loss
 
-
-# class BCEFocalLoss(torch.nn.Module):
-#   """
-#   binary classfication Focalloss, fixed alpha
-#   """
-#   def __init__(self, gamma=2, alpha=0.25, reduction='elementwise_mean'):
-#     super().__init__()
-#     self.gamma = gamma
-#     self.alpha = alpha
-#     self.reduction = reduction
-  
-#   def forward(self, _input, target):
-#     pt = torch.sigmoid(_input)
-#     alpha = self.alpha
-#     loss = - alpha * (1 - pt) ** self.gamma * target * torch.log(pt) - \
-#         (1 - alpha) * pt ** self.gamma * (1 - target) * torch.log(1 - pt)
-#     if self.reduction == 'elementwise_mean':
-#       loss = torch.mean(loss)
-#     elif self.reduction == 'sum':
-#       loss = torch.sum(loss)
-#     return loss

@@ -217,9 +217,17 @@ def main():
         num_workers=args.workers, pin_memory=True)
 
     if args.evaluate:
-        val_loss, prec1, prec_att = validate(test_loader, model, criterion)
-        print('prec_att:')
-        print(prec_att)
+        train_loss, train_prec1, train_prec_att = validate(train_loader, model, criterion)
+        val_loss, val_prec1, val_prec_att = validate(val_loader, model, criterion)
+        test_loss, test_prec1, test_prec_att = validate(test_loader, model, criterion)
+        print('Acc for attribute in train dataset:')
+        print(train_prec_att)
+        print('Acc for attribute in dev dataset:')
+        print(val_prec_att)
+        print('Acc for attribute in test dataset:')
+        print(test_prec_att)
+        # print(prec_att.index(max(prec_att)))
+        # print(prec_att.index(min(prec_att)))
         return
 
     # visualization

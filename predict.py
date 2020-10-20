@@ -55,7 +55,7 @@ def predict():
                                      std=[0.229, 0.224, 0.225])
 
     data_loader = torch.utils.data.DataLoader(
-        CelebATestFromDir(args.data, transforms.Compose([
+        ReadPrivateTestCelebA(args.data, transforms.Compose([
             transforms.ToTensor(),
             normalize,
         ])),
@@ -64,7 +64,7 @@ def predict():
     model.eval()
 
     preds_df = pd.DataFrame()
-    preds_att = torch.LongTensor().to(device) # finally with size: (# of data, 40)
+    preds_att = torch.LongTensor().to(device) )
 
     with torch.no_grad():
 
@@ -73,12 +73,14 @@ def predict():
             output = model(input)
 
             batch_preds = torch.zeros(bs, len(output)).long().to(device)
-            neg_labels = -torch.ones(bs).long().to(device)
+            #print(batch_preds)
+            #change label to -1
+            labels_negative = -torch.ones(bs).long().to(device)
 
             for j in range(len(output)):
                 _, index = torch.max(output[j], dim=1)
 
-                pred = torch.where(index == 0, neg_labels, index) #convert 0 to -1
+                pred = torch.where(index == 0, labels_negative, index) 
                 batch_preds[:, j] = pred
 
             preds_att = torch.cat((preds_att, batch_preds))
