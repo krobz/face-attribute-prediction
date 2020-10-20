@@ -56,6 +56,7 @@ def predict():
 
     data_loader = torch.utils.data.DataLoader(
         ReadPrivateTestCelebA(args.data, transforms.Compose([
+            transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
             normalize,
         ])),
@@ -78,7 +79,7 @@ def predict():
             labels_negative = -torch.ones(bs).long().to(device)
 
             for j in range(len(output)):
-                _, index = torch.max(output[j], dim=1)
+                index = torch.max(output[j], dim=1)[1]
 
                 pred = torch.where(index == 0, labels_negative, index) 
                 batch_preds[:, j] = pred

@@ -248,7 +248,7 @@ def main():
 
         # save the acc for each attribute
         acc_att_dict = {}
-        for i, acc in enumerate(top1_avg_att):
+        for i, acc in enumerate(prec_att):
             acc_att_dict[f"att-{i}"] = acc
 
         # append logger file
