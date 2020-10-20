@@ -62,3 +62,35 @@ class CelebA(data.Dataset):
     def __len__(self):
         return len(self.images)
 
+
+class ReadPrivateTestCelebA(data.Dataset):
+#read 
+    def __init__(self, root, transform=None, loader=default_loader):
+        # save the file path, e.g. .\testset\Aaron_Eckhart\Aaron_Eckhart_0001.jpg
+        self.filenames = []
+
+        for dir_, _, files in os.walk(root):
+            for file_name in files:
+                dir_folder = os.path.relpath(dir_, root)
+                dir_file = os.path.join(dir_folder, file_name)
+                # if not file_name.endswith(".jpg"):
+                if file_name[-3:]!='jpg':
+                    continue
+                self.filenames.append(dir_file)
+
+        self.images = [os.path.join(root, img) for img in self.filenames]
+        self.transform = transform
+        self.loader = loader
+
+    def __getitem__(self, index):
+        filename = self.filenames[index]
+        path = self.images[index]
+        sample = self.loader(path)
+
+        if self.transform is not None:
+            sample = self.transform(sample)
+
+        return sample, filename
+
+    def __len__(self):
+        return len(self.images)
