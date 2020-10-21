@@ -93,6 +93,9 @@ parser.add_argument('--dist-backend', default='gloo', type=str,
 parser.add_argument('--gpu-id', default='0', type=str,
                     help='id(s) for CUDA_VISIBLE_DEVICES')
 
+# If use private dataset
+parser.add_argument('--private', default=false, type=bool,help='whether use private')
+
 
 best_prec1 = 0
 
@@ -208,24 +211,38 @@ def main():
         batch_size=args.test_batch, shuffle=False,
         num_workers=args.workers, pin_memory=True)
 
-    test_loader = torch.utils.data.DataLoader(
-        CelebA(args.data, 'test_40_att_list.txt', transforms.Compose([
+    if args.private:
+        test_loader = torch.utils.data.DataLoader(
+        ReadPrivateTestCelebA(args.data, transforms.Compose([
+            transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
             normalize,
         ])),
-        batch_size=args.test_batch, shuffle=False,
-        num_workers=args.workers, pin_memory=True)
+        batch_size=32, shuffle=False, pin_memory=True)
+    else:
+        test_loader = torch.utils.data.DataLoader(
+            CelebA(args.data, 'test_40_att_list.txt', transforms.Compose([
+                transforms.ToTensor(),
+                normalize,
+            ])),
+            batch_size=args.test_batch, shuffle=False,
+            num_workers=args.workers, pin_memory=True)
 
     if args.evaluate:
-        train_loss, train_prec1, train_prec_att = validate(train_loader, model, criterion)
-        val_loss, val_prec1, val_prec_att = validate(val_loader, model, criterion)
-        test_loss, test_prec1, test_prec_att = validate(test_loader, model, criterion)
-        print('Acc for attribute in train dataset:')
-        print(train_prec_att)
-        print('Acc for attribute in dev dataset:')
-        print(val_prec_att)
-        print('Acc for attribute in test dataset:')
-        print(test_prec_att)
+        if args.private:
+            test_loss, test_prec1, test_prec_att = validate(test_loader, model, criterion)
+            print('Acc for private test dataset:')
+            print(test_prec1)
+        else:
+            train_loss, train_prec1, train_prec_att = validate(train_loader, model, criterion)
+            val_loss, val_prec1, val_prec_att = validate(val_loader, model, criterion)
+            test_loss, test_prec1, test_prec_att = validate(test_loader, model, criterion)
+            print('Acc for attribute in train dataset:')
+            print(train_prec_att)
+            print('Acc for attribute in dev dataset:')
+            print(val_prec_att)
+            print('Acc for attribute in test dataset:')
+            print(test_prec_att)
         # print(prec_att.index(max(prec_att)))
         # print(prec_att.index(min(prec_att)))
         return
