@@ -94,7 +94,7 @@ parser.add_argument('--gpu-id', default='0', type=str,
                     help='id(s) for CUDA_VISIBLE_DEVICES')
 
 # If use private dataset
-parser.add_argument('--private', default=false, type=bool,help='whether use private')
+parser.add_argument('--private', default=False, type=bool,help='whether use private')
 
 
 best_prec1 = 0
