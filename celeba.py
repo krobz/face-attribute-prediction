@@ -115,9 +115,10 @@ class ReadPrivateTestCelebA_LABEL(data.Dataset):
             sample = line.split()
             if len(sample) != 41:
                 raise(RuntimeError("# Annotated face attributes of CelebA dataset should not be different from 40"))
-            targets.append([int(i) for i in sample[1:]])
+            self.targets.append([int(i) for i in sample[1:]])
         self.images = [os.path.join(root, img) for img in self.filenames]
         self.transform = transform
+        self.target_transform = target_transform
         self.loader = loader
 
     def __getitem__(self, index):
@@ -132,7 +133,7 @@ class ReadPrivateTestCelebA_LABEL(data.Dataset):
         if self.transform is not None:
             sample = self.transform(sample)
 
-        return sample, filename
+        return sample, target
 
     def __len__(self):
         return len(self.images)

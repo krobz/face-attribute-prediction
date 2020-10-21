@@ -24,7 +24,7 @@ import models
 from math import cos, pi
 
 from models import resnet
-from celeba import CelebA
+from celeba import CelebA, ReadPrivateTestCelebA_LABEL
 from utils import Bar, Logger, AverageMeter, accuracy, mkdir_p, savefig
 from tensorboardX import SummaryWriter
 
