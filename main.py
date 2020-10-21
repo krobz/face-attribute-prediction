@@ -213,7 +213,7 @@ def main():
 
     if args.private:
         test_loader = torch.utils.data.DataLoader(
-        ReadPrivateTestCelebA(args.data, transforms.Compose([
+        ReadPrivateTestCelebA_LABEL(args.data, 'test_true_neg.txt',transforms.Compose([
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
             normalize,
