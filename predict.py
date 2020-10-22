@@ -65,7 +65,7 @@ def predict():
     model.eval()
 
     preds_df = pd.DataFrame()
-    preds_att = torch.LongTensor().to(device) )
+    preds_att = torch.LongTensor().to(device)
 
     with torch.no_grad():
 
